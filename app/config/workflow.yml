@@ -1,0 +1,27 @@
+framework:
+    workflows:
+        item:
+            type: 'workflow'
+            audit_trail: true
+            supports:
+                - AppBundle\Entity\Item
+            marking_store:
+                type: 'single_state' # or 'multiple_state'
+            places:
+                - draft
+                - open
+                - progress
+                - closed
+            transitions:
+                publish:
+                    guard: "has_role('ROLE_USER')"
+                    from: draft
+                    to: open
+                start:
+                    guard: "has_role('ROLE_USER')"
+                    from: open
+                    to: progress
+                close:
+                    guard: "has_role('ROLE_USER')"
+                    from: open
+                    to: closed
